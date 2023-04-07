@@ -55,7 +55,9 @@ function filterCombineSortLangs(repos) {
 }
 
 export async function handler (event, context) {
-  const user = 'sirdaev';
+
+  const user = JSON.parse(event.body).username;
+  
   const query = `
     {
       repositoryOwner(login: "${user}") {
