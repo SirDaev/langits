@@ -1,0 +1,23 @@
+{
+  "name": "langits",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SirDaev/langits.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SirDaev/langits/issues"
+  },
+  "homepage": "https://github.com/SirDaev/langits#readme",
+  "dependencies": {
+    "@octokit/graphql": "^5.0.5"
+  }
+}
