@@ -16,48 +16,33 @@
     </label>
     <button type="submit">Submit</button>
   </form>
-  <div id="langits"></div>
+  <p id="message"></p>
+  <div style="width: 600px; max-width: 100%; margin: 40px auto;">
+    <canvas id="langitsDonut"></canvas>
+  </div>
+  <div id="langitsTable"></div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="text/javascript">
+    const message = document.getElementById("message");
     const form = document.getElementById("form");
-    const langits = document.getElementById("langits");
+    const langitsTable = document.getElementById("langitsTable");
+    let langitsChart;
     
     form.addEventListener("submit", function(e) {
       e.preventDefault();
       getData(e.target[0].value);
     });
-    
-    async function getData(username) {
-
-      fetch("/api/getLanguages", {
-        method: "POST",
-        body: JSON.stringify({
-          username: username
-        })
-      })
-      .then((response) => {
-        // console.log(response.status)
-        if (response.status >= 200 && response.status <= 299) {
-          return response.json();
-        } else {
-          throw Error(response.statusText);
-        }
-      })
-      .then((jsonResponse) => {
-        // console.log(JSON.stringify(jsonResponse, null, 2));
-        putDataInTable(jsonResponse)
-      }).catch((error) => {
-        // Handle the error
-        alert('Something went wrong. Try a different username.')
-      });
-    }
 
     function putDataInTable(data) {
-      langits.innerHTML = "";
+      langitsTable.innerHTML = "";
 
       if(data.langs.length === 0) {
-        langits.innerHTML = "<p>The user has no repos with languages.</p>"
+        console.log(data)
+        message.innerText = "The user " + data.user + " has no repos with languages."
         return false;
       }
+
+      message.innerText = "The user " + data.user + " has repos containing " + data.langs.length + " languages.";
       const table = document.createElement('table');
       table.setAttribute('style', 'border-collapse: collapse; margin-top: 20px;');
       const tbody = document.createElement('tbody');
@@ -83,8 +68,113 @@
       });
 
       table.appendChild(tbody);
-      langits.appendChild(table);
+      langitsTable.appendChild(table);
     }
+  
+  
+    /* ---------------- */
+
+    const ctx = document.getElementById("langitsDonut");
+
+    function createDiagonalPattern(color = 'black') {
+      let shape = document.createElement('canvas');
+      shape.width = 10;
+      shape.height = 10;
+      let c = shape.getContext("2d");
+      c.strokeStyle = color;
+      c.beginPath();
+      c.moveTo(2,0);
+      c.lineTo(10,8);
+      c.stroke();
+      c.beginPath();
+      c.moveTo(0,8);
+      c.lineTo(2,10);
+      c.stroke();
+      return c.createPattern(shape, 'repeat');
+    }
+
+    function createDonutChart(data) {
+      if(typeof langitsChart === 'object') {
+        langitsChart.destroy();
+      }
+
+      let labels = [];
+      let percents = [];
+      let bgColor = [];
+      let smalls = {
+        labels: [],
+        percent: 0
+      }
+
+      data.langs.forEach(lang => {
+        if(lang.percent >= 1) {
+          labels.push(lang.name + ' ' + lang.percent + '%');
+          percents.push(lang.percent);
+          bgColor.push(lang.color);
+        } else {
+          smalls.labels.push(lang.name);
+          smalls.percent += (+lang.percent);
+        }
+      });
+
+      if(smalls.percent > 0) {
+        labels.push('[' + smalls.labels.join(', ') + '] ' + smalls.percent + '%');
+        percents.push(smalls.percent);
+        bgColor.push(createDiagonalPattern('rebeccaPurple'));
+      }
+
+      const chartData = {
+        labels: labels,
+        datasets: [{
+          label: 'GitHub Languages',
+          data: percents,
+          backgroundColor: bgColor,
+          hoverOffset: 4
+        }]
+      }
+
+      langitsChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: chartData,
+        options: {
+          elements: {
+            arc: {
+              borderWidth: 3
+            }
+          }
+        }
+      })
+    }
+    
+    async function getData(username) {
+
+      fetch("/api/getLanguages", {
+        method: "POST",
+        body: JSON.stringify({
+          username: username
+        })
+      })
+      .then((response) => {
+        // console.log(response.status)
+        if (response.status >= 200 && response.status <= 299) {
+          return response.json();
+        } else {
+          console.log('error here')
+          throw Error(response.statusText);
+        }
+      })
+      .then((jsonResponse) => {
+        // console.log(JSON.stringify(jsonResponse, null, 2));
+        putDataInTable(jsonResponse);
+        createDonutChart(jsonResponse);
+      }).catch((error) => {
+        // Handle the error
+        console.log(error)
+        alert('Something went wrong. Try a different username.')
+      });
+    }
+
+
   </script>
 </body>
 </html>
