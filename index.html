@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Visualize your most-used programming languages in your Github repos with Langits.</title>
+  <link rel="stylesheet" href="./styles/styles.min.css">
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="description" content="Visualize your most-used programming languages in your Github repos with Langits." />
 </head>
@@ -10,11 +11,15 @@
   <h1>Langits</h1>
   <p>Visualize your most-used programming languages in your GitHub repos.</p>
   <form id="form" action="" onsubmit="">
-    <label>
-      Enter your Github username:
-      <input type="text" placeholder="username"/>
-    </label>
-    <button type="submit">Submit</button>
+    <div>
+      <label>
+        Enter your Github username:
+        <input type="text" placeholder="username"/>
+      </label>
+    </div>
+    <div>
+      <button type="submit">Submit</button>
+    </div>
   </form>
   <p id="message"></p>
   <div style="width: 600px; max-width: 100%; margin: 40px auto;">

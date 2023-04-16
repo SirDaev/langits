@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tailwindcss -i ./src/input.css -o ./styles/styles.min.css --watch",
+    "build": "node ./src/bundle.js && tailwindcss -i ./src/input.css -o ./dist/styles/styles.min.css --minify"
   },
   "repository": {
     "type": "git",
@@ -19,5 +20,12 @@
   "homepage": "https://github.com/SirDaev/langits#readme",
   "dependencies": {
     "@octokit/graphql": "^5.0.5"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "cssnano": "^6.0.0",
+    "postcss": "^8.4.21",
+    "postcss-cli": "^10.1.0",
+    "tailwindcss": "^3.3.1"
   }
 }
