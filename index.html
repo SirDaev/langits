@@ -58,11 +58,11 @@
 
       if(data.langs.length === 0) {
         console.log(data)
-        message.innerText = "The user " + data.user + " has no repos with languages."
+        message.innerHTML = "The user <a href='https://www.github.com/" + data.user + "' class='text-langits-blue underline underline-offset-2' target='_blank'>" + data.user + "</a> has no repos with languages."
         return false;
       }
 
-      message.innerText = "The user " + data.user + " has repos containing " + data.langs.length + " languages.";
+      message.innerHTML = "The user <a href='https://www.github.com/" + data.user + "' class='text-langits-blue underline underline-offset-2' target='_blank'>" + data.user + "</a> has " + data.numberOfRepos + ((data.numberOfRepos > 1) ? ' repos' : ' repo') + " containing " + data.langs.length + ((data.langs.length > 1) ? ' languages' : ' language') + ".";
       const table = document.createElement('table');
       table.setAttribute('style', 'border-collapse: collapse; margin-top: 20px;');
       const tbody = document.createElement('tbody');
@@ -176,16 +176,14 @@
         })
       })
       .then((response) => {
-        // console.log(response.status)
         if (response.status >= 200 && response.status <= 299) {
           return response.json();
         } else {
-          console.log('error here')
+          console.log(error)
           throw Error(response.statusText);
         }
       })
       .then((jsonResponse) => {
-        // console.log(JSON.stringify(jsonResponse, null, 2));
         putDataInTable(jsonResponse);
         createDonutChart(jsonResponse);
       }).catch((error) => {

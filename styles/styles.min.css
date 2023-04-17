@@ -765,6 +765,19 @@ video {
   color: rgb(245 245 245 / var(--tw-text-opacity));
 }
 
+.text-langits-blue {
+  --tw-text-opacity: 1;
+  color: rgb(53 114 165 / var(--tw-text-opacity));
+}
+
+.underline {
+  text-decoration-line: underline;
+}
+
+.underline-offset-2 {
+  text-underline-offset: 2px;
+}
+
 @media (min-width: 768px) {
   .md\:w-auto {
     width: auto;
