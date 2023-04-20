@@ -25,7 +25,7 @@ function filterCombineSortLangs(repos) {
       if(langExistsIndex === -1) {
         langsList.push({
           "name": lang.node.name,
-          "color": lang.node.color,
+          "color": lang.node.color == null ? '#ededed' : lang.node.color,
           "sizeInBytes": lang.size
         });
       } else {
