@@ -70,17 +70,17 @@
         const tr = document.createElement('tr');
         
           const td_color = document.createElement('td');
-          td_color.setAttribute('style', 'background: '+lang.color+"; width: 30px;");
+          td_color.setAttribute('style', 'border: 2px solid #333; background: '+lang.color+"; width: 30px;");
           tr.appendChild(td_color);
 
           const td_name = document.createElement('td');
           td_name.appendChild(document.createTextNode(lang.name));
-          td_name.setAttribute('style', 'border: 1px solid black; padding: 4px 6px;');
+          td_name.setAttribute('style', 'border: 2px solid #333; padding: 4px 6px;');
           tr.appendChild(td_name);
 
           const td_percent = document.createElement('td');
           td_percent.appendChild(document.createTextNode(lang.percent + "%"));
-          td_percent.setAttribute('style', 'border: 1px solid black; padding: 4px 6px;');
+          td_percent.setAttribute('style', 'border: 2px solid #333; padding: 4px 6px;');
           tr.appendChild(td_percent);
 
         tbody.appendChild(tr);
