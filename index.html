@@ -57,7 +57,6 @@
       langitsTable.innerHTML = "";
 
       if(data.langs.length === 0) {
-        console.log(data)
         message.innerHTML = "The user <a href='https://www.github.com/" + data.user + "' class='text-langits-blue underline underline-offset-2' target='_blank'>" + data.user + "</a> has no repos with languages."
         return false;
       }
@@ -122,8 +121,12 @@
       let percents = [];
       let bgColor = [];
       let smalls = {
-        labels: [],
-        percent: 0
+        count: 0,
+        percent: 0,
+        ifOnlyOne: {
+          color: '',
+          name: ''
+        }
       }
 
       data.langs.forEach(lang => {
@@ -132,15 +135,23 @@
           percents.push(lang.percent);
           bgColor.push(lang.color);
         } else {
-          smalls.labels.push(lang.name);
+          smalls.count = smalls.count + 1;
           smalls.percent += (+lang.percent);
+          smalls.ifOnlyOne.color = lang.color;
+          smalls.ifOnlyOne.name = lang.name;
         }
       });
 
-      if(smalls.percent > 0) {
-        labels.push('[' + smalls.labels.join(', ') + '] ' + smalls.percent + '%');
-        percents.push(smalls.percent);
-        bgColor.push(createDiagonalPattern('rebeccaPurple'));
+      if(smalls.percent > 0 && smalls.count > 0) {
+        percents.push(smalls.percent.toFixed(2));
+
+        if(smalls.count > 1) {
+          labels.push('Other ' + smalls.percent.toFixed(2) + '%');
+          bgColor.push(createDiagonalPattern('rebeccaPurple'));
+        } else {
+          labels.push(smalls.ifOnlyOne.name + ' ' + smalls.percent.toFixed(2) + '%');
+          bgColor.push(smalls.ifOnlyOne.color);
+        }
       }
 
       const chartData = {
