@@ -11,11 +11,11 @@
 <body class="font-firaSans text-langits-black text-lg md:text-xl flex flex-col h-full">
   <header class="pt-12 mb-16">
     <div class="container">
-      <h1 class="text-5xl md:text-6xl font-bold mb-3">
+      <a class="block text-5xl md:text-6xl font-bold mb-3" href="/">
         <svg viewBox="0 0 64 64" class="inline-block align-bottom w-[54px] md:w-[64px]"><g style="fill-rule:evenodd;clip-rule:evenodd;fill:#3572A5;stroke:#333333;stroke-width:2;stroke-miterlimit:1.5;stroke-linecap:round;stroke-linejoin:round;"><path d="M31.9876 1.28879C15.0331 1.28879 1.28882 15.0331 1.28882 31.9875C1.28882 46.0126 10.7939 58.2544 24.3817 61.7292L28.1846 46.8584C21.3907 45.121 16.6382 39.0001 16.6382 31.9875C16.6382 23.5103 23.5103 16.6382 31.9876 16.6382V1.28879Z"/></g><g style="fill-rule:evenodd;clip-rule:evenodd;fill:#C6538C;stroke:#333333;stroke-width:2;stroke-miterlimit:1.5;stroke-linecap:round;stroke-linejoin:round;"><path d="M59.81 19.012C54.768 8.20031 43.918 1.28879 31.9875 1.28879V16.6367C37.9528 16.6367 43.3778 20.0924 45.8988 25.4983L59.81 19.012Z"/></g><g style="fill-rule:evenodd;clip-rule:evenodd;fill:#F1E05A;stroke:#333333;stroke-width:2;stroke-miterlimit:1.5;stroke-linecap:round;stroke-linejoin:round;"><path d="M24.0422 61.6403C40.419 66.0284 57.2522 56.3097 61.6404 39.933C63.7477 32.0686 62.6445 23.6892 58.5736 16.6382L45.2807 24.3129C47.3161 27.8384 47.8677 32.0281 46.8141 35.9603C44.62 44.1486 36.2034 49.008 28.015 46.8139L24.0423 61.6403H24.0422Z"/></g></svg>
         Langits
-      </h1>
-      <p class="text-xl md:text-2xl">Visualize your most-used programming languages in your GitHub repos.</p>
+      </a>
+      <h1 class="text-xl md:text-2xl">Visualize your most-used programming languages in your GitHub repos.</h1>
     </div>
   </header>
   <main class="grow">
@@ -38,6 +38,20 @@
         <canvas id="langitsDonut"></canvas>
       </div>
       <div id="langitsTable"></div>
+    </section>
+    <section id="how-it-works" class="container">
+      <h2 class="text-3xl font-bold mb-2">How It Works</h2>
+      <p class="mb-6">Langits shows the programming languages that make up the GitHub repositories of a given GitHub user. The languages are broken down into percentages based on their propo rtion throughout all of the user's GitHub repositories. The app queries <a href="https://docs.github.com/en/graphql" target="_blank" class="text-langits-blue underline underline-offset-2">GitHub's GraphQL API</a> to obtain the data for the given user.</p>
+      <h3 class="text-2xl font-bold mb-2">API Limitations</h3>
+      <p class="mb-4">The GitHub GraphQL API <a href="https://docs.github.com/en/graphql/overview/resource-limitations" target="_blank" class="text-langits-blue underline underline-offset-2">limits the request query</a> to 100 repositories. This is the value used by Langits; the visualization above is only representative of the given user's latest 100 repositories ordered by push time. Since GitHub allows users to have unlimited repos, this could skew and change the meaning of the data! One should keep this in the back of their mind when querying a username, and one may also check the user's GitHub page if they see that 100 repositories are visualized here.</p>
+      <p class="mb-6">The API also limits the number of programming languages returned by the request to 100, and this is also the value used by Langits. It is likely that very few repos have over 100 languages used in them, so this limitation should rarely show its effects.</p>
+      <h3 class="text-2xl font-bold mb-2">What is a Language?</h3>
+      <p class="mb-4">GitHub considers more than strictly just programming languages when they characterize a repository. For example, the <a href="https://github.com/vuejs/docs" target="_blank" class="text-langits-blue underline underline-offset-2">Vue.js v3 docs</a> display Vue, TypeScript, and JavaScript (among others) as its languages. Vue is not a language itself, but a JavaScript library!</p>
+      <figure class="w-[300px] md:w-[400px] mb-2">
+        <img src="/images/vuejs-percentages.png" alt="A percent line and description of language make-up of the Vue.js docs repo" class="border-2 border-langits-black" />
+        <figcaption class="italic text-sm p-2">A screenshot of the visualization of languages in the Vue.js docs repo on GitHub.com taken April 21, 2023.</figcaption>
+      </figure>
+      <p class="mb-4">GitHub recognizes over 960 languages, and the list is being updated quite frequently. They categorize recognized languages as data, programming, markup, prose, or nil. Check out GitHub's handy <a href="https://github.com/github/linguist/blob/master/lib/linguist/languages.yml" target="_blank" class="text-langits-blue underline underline-offset-2">linguist Gist</a> for more detail.</p>
     </section>
   </main>
   <footer class="py-8 container">
@@ -67,7 +81,7 @@
 
       message.innerHTML = "The user <a href='https://www.github.com/" + data.user + "' class='text-langits-blue underline underline-offset-2' target='_blank'>" + data.user + "</a> has " + data.numberOfRepos + ((data.numberOfRepos > 1) ? ' repos' : ' repo') + " containing " + data.langs.length + ((data.langs.length > 1) ? ' languages' : ' language') + ".";
       const table = document.createElement('table');
-      table.setAttribute('style', 'border-collapse: collapse; margin-top: 20px;');
+      table.setAttribute('style', 'border-collapse: collapse; margin-top: 20px; margin-bottom: 60px;');
       const tbody = document.createElement('tbody');
 
       data.langs.forEach(lang => {

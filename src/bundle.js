@@ -6,4 +6,5 @@ if (!fs.existsSync("dist")){
 }
 
 fs.copyFile( 'index.html', 'dist/index.html', () => {});
+fse.copySync('images', 'dist/images');
 fse.copySync('fonts', 'dist/fonts');
